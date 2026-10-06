@@ -10,7 +10,7 @@ import javafx.animation.ScaleTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
-import static javafx.application.Application.launch;
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -18,16 +18,14 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Polyline;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-
 /**
- * JavaFX App
+ * JavaFX App - Fixed Version
  */
 public class App extends Application {
 
@@ -60,7 +58,7 @@ public class App extends Application {
             bx, by,
             cx, cy,
             dx, dy,
-            ay, ay
+            ax, ay
         );
         rectangularPath.setStroke(Color.BLACK);
         rectangularPath.setStrokeWidth(2);
@@ -73,38 +71,38 @@ public class App extends Application {
         objB = new Ellipse(centerX, centerY, 50, 25);
         objB.setFill(Color.CORAL);
         objB.setStroke(Color.BLACK);
-
-        animationPane.getChildren().addAll(rectangularPath, objB, objB);
+        
+        animationPane.getChildren().addAll(rectangularPath, objA, objB);
 
         transA = new PathTransition();
         transA.setDuration(Duration.seconds(TOTAL_DURATION_SECONDS));
         transA.setPath(rectangularPath);
         transA.setNode(objA);
         transA.setCycleCount(1);
-        
+
         FadeTransition fadeB = new FadeTransition(Duration.seconds(PHASE_DURATION_SECONDS), objB);
         fadeB.setFromValue(1.0);
         fadeB.setToValue(0.2);
-        
+
         ScaleTransition scaleB = new ScaleTransition(Duration.seconds(PHASE_DURATION_SECONDS), objB);
         scaleB.setFromX(1.0);
         scaleB.setFromY(1.0);
         scaleB.setToX(2.0);
         scaleB.setToY(2.0);
-        
+
         RotateTransition rotateB = new RotateTransition(Duration.seconds(PHASE_DURATION_SECONDS), objB);
         rotateB.setFromAngle(0.0);
         rotateB.setToAngle(360.0);
-        
+
         TranslateTransition translateB = new TranslateTransition(Duration.seconds(PHASE_DURATION_SECONDS), objB);
         translateB.setByY(-80.0);
 
         PauseTransition delayEnd = new PauseTransition(Duration.seconds(1.0));
 
         transB = new SequentialTransition(fadeB, scaleB, rotateB, translateB, delayEnd);
-        
+
         mainParallelTransition = new ParallelTransition(transA, transB);
-        
+
         Button btnStart = new Button("Start");
         Button btnReset = new Button("Reset");
         Button btnExit = new Button("Exit");
@@ -121,12 +119,12 @@ public class App extends Application {
 
         btnReset.setOnAction(e -> resetAnimation());
 
-        btnExit.setOnAction(e -> System.exit(0));
+        btnExit.setOnAction(e -> Platform.exit());
 
         HBox buttonBox = new HBox(15, btnStart, btnReset, btnExit);
         buttonBox.setAlignment(Pos.CENTER);
         buttonBox.setStyle("-fx-padding: 15; -fx-border-color: black; -fx-border-width: 1px;");
-        
+
         BorderPane root = new BorderPane();
         root.setCenter(animationPane);
         root.setBottom(buttonBox);
@@ -139,7 +137,7 @@ public class App extends Application {
 
     private void resetAnimation() {
         mainParallelTransition.stop();
-        
+
         objA.setTranslateX(0);
         objA.setTranslateY(0);
 
@@ -154,5 +152,4 @@ public class App extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-
 }
