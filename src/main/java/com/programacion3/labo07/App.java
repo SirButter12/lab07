@@ -80,7 +80,7 @@ public class App extends Application {
         transA.setDuration(Duration.seconds(TOTAL_DURATION_SECONDS));
         transA.setPath(rectangularPath);
         transA.setNode(objA);
-        transA.setCycleCount(1);
+        transA.setCycleCount(3);
 
         FadeTransition fadeB = new FadeTransition(Duration.seconds(PHASE_DURATION_SECONDS), objB);
         fadeB.setFromValue(1.0);
