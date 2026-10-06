@@ -27,6 +27,7 @@ import javafx.util.Duration;
 /**
  * JavaFX App - Fixed Version
  * 
+ * https://github.com/SirButter12/lab07
  */
 public class App extends Application {
 
